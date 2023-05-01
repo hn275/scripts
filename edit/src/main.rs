@@ -1,6 +1,9 @@
 use std::fs;
 use std::process::Command;
-use std::{env, io::Error};
+use std::{
+    env,
+    io::{Error, ErrorKind},
+};
 
 fn main() {
     let home_dir = env::var("HOME").unwrap();
@@ -34,16 +37,33 @@ fn main() {
 }
 
 fn get_paths() -> Result<Vec<String>, Error> {
-    let home_dir = env::var("HOME").unwrap();
-    let file_path = format!("{}/_scripts/edit/locations.txt", home_dir);
+    let path = env::var("XDG_CONFIG_HOME").map_err(|err| {
+        return Error::new(ErrorKind::NotFound, err);
+    })?;
 
-    let file = fs::read_to_string(file_path)
-        .map_err(|e| e)?
+    let config_path = format!("{}/edit", path);
+    let file_path = format!("{}/locations.txt", config_path);
+
+    let file = fs::read_to_string(&file_path)
+        .unwrap_or_else(|err| {
+            match err.kind() {
+                ErrorKind::NotFound => {
+                    fs::create_dir(config_path).unwrap_or_else(|err| {
+                        panic!("{err}");
+                    });
+                    let init_content = "";
+                    fs::write(&file_path, init_content.as_bytes()).unwrap();
+                    println!("Created location.txt")
+                }
+                _ => {
+                    panic!("{err}");
+                }
+            }
+            "".to_owned()
+        })
         .trim()
         .split("\n")
-        .map(|el| {
-            return el.to_owned();
-        })
+        .map(|el| el.to_owned())
         .collect::<Vec<String>>();
 
     return Ok(file);
