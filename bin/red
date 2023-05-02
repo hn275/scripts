@@ -8,5 +8,5 @@ if pgrep -x redshift > /dev/null;then
 	exit 0 
 else
 	polybar-msg action "#redshift.hook.1"
-	redshift
+	redshift &> /dev/null
 fi
