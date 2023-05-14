@@ -16,7 +16,7 @@ The binary is compiled at `./target/release/edit-fzf`, this location is needed
 in step 4.
 
 3. create a `locations.txt` at `$XDG_CONFIG_HOME/edit` (this is likely going
-   to be at `$HOME/.config/`). Specify inside this file all the directory you
+   to be at `$HOME/.config/`). Specify inside this file all the directories you
    want.
 
    - For example, if the full path is `$HOME/scripts` then an entry
