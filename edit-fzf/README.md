@@ -34,3 +34,6 @@ edit() {
   fi
 }
 ```
+
+### Usage
+![usage](./example/usage.gif)
