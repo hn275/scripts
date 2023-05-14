@@ -45,22 +45,7 @@ fn get_paths() -> Result<Vec<String>, Error> {
     let file_path = format!("{}/locations.txt", config_path);
 
     let file = fs::read_to_string(&file_path)
-        .unwrap_or_else(|err| {
-            match err.kind() {
-                ErrorKind::NotFound => {
-                    fs::create_dir(config_path).unwrap_or_else(|err| {
-                        panic!("{err}");
-                    });
-                    let init_content = "";
-                    fs::write(&file_path, init_content.as_bytes()).unwrap();
-                    println!("Created location.txt")
-                }
-                _ => {
-                    panic!("{err}");
-                }
-            }
-            "".to_owned()
-        })
+        .map_err(|err| err)?
         .trim()
         .split("\n")
         .map(|el| el.to_owned())
