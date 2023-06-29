@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
-find . -type d \( -name node_modules \
+find /home/haln -type d \( \
+    -name node_modules \
     -o -name .git \
     -o -name .npm \
     -o -name .nvm \
