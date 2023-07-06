@@ -16,4 +16,4 @@ find /home/haln -type d \( \
     -o -name .ssh \
     -o -name .cargo \) \
     -prune \
-    -o -name '*' -type d -print | fzf
+    -o -name '*' -type d -print 2>/dev/null | fzf
